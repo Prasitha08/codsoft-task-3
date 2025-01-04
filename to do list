@@ -1,0 +1,48 @@
+import tkinter as tk
+from tkinter import messagebox
+
+def add_task():
+    task = entry_task.get()
+    if task != "":
+        listbox_tasks.insert(tk.END, task)
+        entry_task.delete(0, tk.END)
+    else:
+        messagebox.showwarning("Input Error", "Please enter a task.")
+
+def delete_task():
+    try:
+        task_index = listbox_tasks.curselection()[0]
+        listbox_tasks.delete(task_index)
+    except IndexError:
+        messagebox.showwarning("Selection Error", "Please select a task to delete.")
+
+def complete_task():
+    try:
+        task_index = listbox_tasks.curselection()[0]
+        task = listbox_tasks.get(task_index)
+        listbox_tasks.delete(task_index)
+        listbox_tasks.insert(task_index, task + " (Completed)")
+    except IndexError:
+        messagebox.showwarning("Selection Error", "Please select a task to mark as completed.")
+
+root = tk.Tk()
+root.title("To-Do List Application")
+
+tk.Label(root, text="To-Do List", font=("Helvetica", 16)).pack(pady=10)
+
+entry_task = tk.Entry(root, width=35)
+entry_task.pack(pady=5)
+
+button_add = tk.Button(root, text="Add Task", width=20, command=add_task)
+button_add.pack(pady=5)
+
+listbox_tasks = tk.Listbox(root, height=10, width=35, selectmode=tk.SINGLE)
+listbox_tasks.pack(pady=10)
+
+button_delete = tk.Button(root, text="Delete Task", width=20, command=delete_task)
+button_delete.pack(pady=5)
+
+button_complete = tk.Button(root, text="Mark as Completed", width=20, command=complete_task)
+button_complete.pack(pady=5)
+
+root.mainloop()
